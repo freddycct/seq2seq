@@ -54,6 +54,8 @@ def main(argv):
         help='dropout is the probability to ignore the neuron outputs')
     parser.add_argument('--top-words', default=80, type=int,
         help='the top percentile of word count to retain in the vocabulary')
+    parser.add_argument('--log-freq', default=100, type=int,
+        help='the frequency to printout the training verbose information')
 
     args = parser.parse_args()
     print(args)
@@ -70,6 +72,7 @@ def main(argv):
     rev         = args.reverse_input
     dropout     = args.dropout
     top_words   = args.top_words
+    log_freq    = args.log_freq
     context     = mx.cpu() if args.gpus is None else [ mx.gpu(int(i)) for i in args.gpus.split(',') ]
     enc_train_input = args.enc_train_input
     dec_train_input = args.dec_train_input
@@ -140,7 +143,7 @@ def main(argv):
             X = train_iter,
             eval_data = test_iter if 'test_iter' in locals() else None,
             eval_metric = mx.metric.np(perplexity, use_ignore=True, ignore_label=num_labels),
-            batch_end_callback = [ mx.callback.Speedometer(batch_size, frequent=10) ],
+            batch_end_callback = [ mx.callback.Speedometer(batch_size, frequent=log_freq) ],
             epoch_end_callback = [ mx.callback.do_checkpoint( '%s/%s' % (params_dir, expt_name) ) ]
         )
     # if iterations > 0:

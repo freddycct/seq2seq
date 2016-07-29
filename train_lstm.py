@@ -54,7 +54,7 @@ def main(argv):
         help='dropout is the probability to ignore the neuron outputs')
     parser.add_argument('--top-words', default=80, type=int,
         help='the top percentile of word count to retain in the vocabulary')
-    parser.add_argument('--log-freq', default=100, type=int,
+    parser.add_argument('--log-freq', default=1000, type=int,
         help='the frequency to printout the training verbose information')
     parser.add_argument('--lr', default=0.01, type=float,
         help='learning rate of the stochastic gradient descent')

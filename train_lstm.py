@@ -56,6 +56,8 @@ def main(argv):
         help='the top percentile of word count to retain in the vocabulary')
     parser.add_argument('--log-freq', default=100, type=int,
         help='the frequency to printout the training verbose information')
+    parser.add_argument('--lr', default=0.01, type=float,
+        help='learning rate of the stochastic gradient descent')
 
     args = parser.parse_args()
     print(args)
@@ -78,6 +80,7 @@ def main(argv):
     dec_train_input = args.dec_train_input
     enc_test_input  = args.enc_test_input
     dec_test_input  = args.dec_test_input
+    lr = args.lr
 
     np.random.seed(seed)
 
@@ -129,7 +132,7 @@ def main(argv):
             ctx           = context, # uses all the available CPU in the machine
             symbol        = get_lstm_sym_generator(num_layers, num_hidden, num_labels, dropout),
             num_epoch     = iterations,
-            learning_rate = 0.1,
+            learning_rate = lr,
             momentum      = 0.0,
             wd            = 0.00001,
             initializer   = mx.init.Xavier(factor_type="in", magnitude=2.34),

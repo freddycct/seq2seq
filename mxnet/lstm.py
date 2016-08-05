@@ -40,16 +40,16 @@ def lstm_cell(num_hidden, indata, prev_state, param, seqidx, layeridx, dropout=0
 
     return LSTMState(c=next_c, h=next_h)
 
-def init_lstm(num_layer):
+def init_lstm(num_layer, prefix=''):
     param_cells = []
     last_states = []
     for i in range(num_layer):
         param_cells.append(
             LSTMParam(
-                i2h_weight=mx.sym.Variable("l%d_i2h_weight" % i),
-                i2h_bias=mx.sym.Variable("l%d_i2h_bias" % i),
-                h2h_weight=mx.sym.Variable("l%d_h2h_weight" % i),
-                h2h_bias=mx.sym.Variable("l%d_h2h_bias" % i)
+                i2h_weight=mx.sym.Variable("%s_l%d_i2h_weight" % (prefix, i)),
+                i2h_bias=mx.sym.Variable("%s_l%d_i2h_bias" % (prefix, i)),
+                h2h_weight=mx.sym.Variable("%s_l%d_h2h_weight" % (prefix, i)),
+                h2h_bias=mx.sym.Variable("%s_l%d_h2h_bias" % (prefix, i))
             )
         )
         last_states.append(
